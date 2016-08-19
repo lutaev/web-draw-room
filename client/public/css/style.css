@@ -1,0 +1,10 @@
+#layout{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 20px;
+}
+
+#layout form{
+    max-width: 500px;
+    margin: 0 auto;
+}
