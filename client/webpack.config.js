@@ -12,7 +12,10 @@ module.exports = {
     filename: 'build.js'
   },
 
-  //watch: true,
+  watch: true,
+  watchOptions: {
+    aggregateTimeout: 100
+  },
 
   module: {
     loaders: [{

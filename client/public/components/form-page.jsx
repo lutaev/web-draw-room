@@ -2,6 +2,7 @@
 'use strict';
 
 import React from 'react';
+import Dispatcher from '../js/dispatcher';
 
 export default React.createClass({
     onInput(event) {
@@ -10,8 +11,12 @@ export default React.createClass({
 
     onSubmit(event) {
         event.preventDefault();
-        if (this.code) {
 
+        if (this.code) {
+          Dispatcher.dispatch({
+              eventName: 'add-code',
+              data: { code: this.code }
+          });
         }
     },
 

@@ -1,10 +1,20 @@
 #layout{
     max-width: 1200px;
     margin: 0 auto;
-    padding: 100px 20px;
+    padding: 50px 20px;
+    color: #555555;
 }
 
 #layout form{
     max-width: 500px;
     margin: 0 auto;
+}
+
+#canvas-wrapper{
+    width: 500px;
+    margin: 20px auto;
+}
+#canvas-wrapper canvas{
+    outline: 1px solid #888888;
+    cursor: default;
 }
