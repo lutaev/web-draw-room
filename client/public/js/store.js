@@ -11,14 +11,7 @@ const store =  {
   id: null,
   partner: false,
 
-  refreshAll() {
-    this.code = null;
-    this.color = null;
-    this.id = null;
-    this.partner = false;
-
-    this.emit('store-refresh');
-  },
+  // Events from UI
 
   checkCode(data){
     $.ajax({
@@ -34,6 +27,7 @@ const store =  {
 
   onCodeChecked(response) {
     if (response.status == 200) {
+
       this.id = response.person.id;
       this.code = response.person.code;
       this.color = response.person.color;
@@ -41,7 +35,7 @@ const store =  {
       this.partner = response.person.hasPartner;
 
       // Connecting to websocket
-      this.socket = socket(this.code);
+      this.socket = socket.connect(this.code);
 
       // Triggering events
       this.emit('code-added');
@@ -50,16 +44,53 @@ const store =  {
     }
   },
 
-  partnerAdded() {
-    this.emit('partner-added');
+  drawStart(data) {
+    this.socket.emit('draw-start', data);
   },
 
   draw(data) {
     this.socket.emit('draw', data);
   },
 
+  drawStop() {
+    this.socket.emit('draw-stop');
+  },
+
+  clearBoard(){
+    this.socket.emit('clear-board');
+  },
+
+
+  // Events from server
+
+  serverDrawStart(data){
+    this.emit('draw-start', data);
+  },
+
   serverDraw(data){
-    console.log(data);
+    this.emit('draw', data);
+  },
+
+  serverDrawStop(data){
+    this.emit('draw-stop', data);
+  },
+
+  serverClearBoard(){
+    this.emit('clear-board');
+  },
+
+  refreshAll() {
+    this.code = null;
+    this.color = null;
+    this.id = null;
+    this.partner = false;
+    socket.disconnect();
+
+    this.emit('store-refresh');
+  },
+
+  partnerAdded() {
+    this.emit('partner-added');
   }
 };
 

@@ -22,12 +22,36 @@ Dispatcher.register( function( event ) {
       store.refreshAll();
       break;
 
+    case 'draw-start':
+      store.drawStart(event.data);
+      break;
+
     case 'draw':
       store.draw(event.data);
       break;
 
+    case 'draw-stop':
+      store.drawStop(event.data);
+      break;
+
+    case 'clear-board':
+      store.clearBoard();
+      break;
+
+    case 'server-draw-start':
+      store.serverDrawStart(event.data);
+      break;
+
     case 'server-draw':
       store.serverDraw(event.data);
+      break;
+
+    case 'server-draw-stop':
+      store.serverDrawStop(event.data);
+      break;
+
+    case 'server-clear-board':
+      store.serverClearBoard();
       break;
   }
 

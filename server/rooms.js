@@ -15,10 +15,12 @@ module.exports = {
       throw new Error('No websocket connect instance!');
     }
 
+    const socketConnect = require('socket/socket-connect');
+
     // I there is no room for this code - let's add room, array for persons and ws connection
     if (!rooms[data.code]) {
 
-      var connection = setConnection(data.code);
+      var connection = socketConnect( data.code);
 
       rooms[data.code] = {
         persons: [],
@@ -27,7 +29,7 @@ module.exports = {
     }
 
     var personsLength = rooms[data.code].persons.length;
-    // Rooms only for two persons
+    // Rooms for two persons only
     if (personsLength === 2) {
       return null;
     }
@@ -46,30 +48,42 @@ module.exports = {
     }
   },
 
+  getIO() {
+    return io;
+  },
+
   getRooms() {
     return rooms;
   }
 };
 
-function setConnection(code) {
-  var connection = io.of('/' + code);
+//function setConnection(code) {
+//  var connection = io.of('/' + code);
+//
+//  connection.on('connection', (socket) => {
+//    socket.broadcast.emit('partner-added');
+//
+//    socket.on('draw-start', data => {
+//      socket.broadcast.emit('server-draw-start', data);
+//    });
+//
+//    socket.on('draw', data => {
+//      socket.broadcast.emit('server-draw', data);
+//    });
+//
+//    socket.on('draw-stop', () => {
+//      socket.broadcast.emit('server-draw-stop');
+//    });
+//
+//    socket.on('disconnect', () => {
+//      socket.broadcast.emit('room-deleted');
+//      deleteRoom(code);
+//    })
+//  });
+//
+//  return connection;
+//}
 
-  connection.on('connection', (socket) => {
-    socket.broadcast.emit('partner-added');
-
-    socket.on('draw', data => {
-      socket.broadcast.emit('server-draw', data);
-    });
-
-    socket.on('disconnect', () => {
-      socket.broadcast.emit('room-deleted');
-      deleteRoom(code);
-    })
-  });
-
-  return connection;
-}
-
-function deleteRoom(code) {
-  delete rooms[code];
-}
+//function deleteRoom(code) {
+//  delete rooms[code];
+//}

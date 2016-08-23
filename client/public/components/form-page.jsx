@@ -45,7 +45,7 @@ export default React.createClass({
             <form onSubmit={this.onSubmit}>
                 <div className="form-group">
                     <label htmlFor="enterCode">Code</label>
-                    <input onInput={this.onInput} value={this.state.code} type="text" className="form-control" id="enterCode" placeholder="Enter your code"/>
+                    <input onInput={this.onInput} value={this.state.code} type="text" className="form-control" id="enterCode" placeholder="Enter your code" required/>
                 </div>
                 <div className="form-group">
                     <label>Select color</label>

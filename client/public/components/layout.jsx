@@ -26,6 +26,8 @@ export default React.createClass ({
     },
 
     reload: function() {
+        store.partner = false;
+
         this.setState({
             code: null,
             refreshed: false

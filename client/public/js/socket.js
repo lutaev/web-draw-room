@@ -5,27 +5,55 @@
 import io from 'socket.io-client';
 import Dispatcher from './dispatcher';
 
-export default (roomCode) => {
-  var socket = io.connect('http://localhost:8000/' + roomCode);
+let socket = null;
 
-  socket.on('server-draw', data => {
-    Dispatcher.dispatch({
-      eventName: 'server-draw',
-      data: data
+export default {
+  connect(roomCode) {
+    socket = io.connect('http://localhost:8000/' + roomCode);
+
+    socket.on('draw-start', data => {
+      Dispatcher.dispatch({
+        eventName: 'server-draw-start',
+        data: data
+      });
     });
-  });
 
-  socket.on('partner-added', data => {
-    Dispatcher.dispatch({
-      eventName: 'partner-added'
+    socket.on('draw', data => {
+      Dispatcher.dispatch({
+        eventName: 'server-draw',
+        data: data
+      });
     });
-  });
 
-  socket.on('room-deleted', data => {
-    Dispatcher.dispatch({
-      eventName: 'room-deleted'
+    socket.on('draw-start', data => {
+      Dispatcher.dispatch({
+        eventName: 'server-draw-stop'
+      });
     });
-  });
 
-  return socket;
-};
+    socket.on('partner-added', data => {
+      debugger;
+      Dispatcher.dispatch({
+        eventName: 'partner-added'
+      });
+    });
+
+    socket.on('room-deleted', data => {
+      Dispatcher.dispatch({
+        eventName: 'room-deleted'
+      });
+    });
+
+    socket.on('clear-board', data => {
+      Dispatcher.dispatch({
+        eventName: 'server-clear-board'
+      });
+    });
+
+    return socket;
+  },
+
+  disconnect() {
+    socket = null;
+  }
+}
