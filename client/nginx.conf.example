@@ -30,13 +30,13 @@ http {
 
         location /
         {
-        root ~/web-draw-room/client/;
-        try_files $uri /index.html;
+            root /Users/<username>/web-draw-room/client/;
+            try_files $uri /index.html;
         }
 
         location /api/
         {
-        proxy_pass http://localhost:8000;
+            proxy_pass http://localhost:8000;
         }
 
     }
