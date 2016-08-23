@@ -84,7 +84,6 @@ const store =  {
     this.color = null;
     this.id = null;
     this.partner = false;
-    socket.disconnect();
 
     this.emit('store-refresh');
   },

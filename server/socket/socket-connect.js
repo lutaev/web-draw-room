@@ -2,15 +2,15 @@
 'use strict';
 
 let rooms = require('rooms');
-let connections = {};
+let namespaces = {};
 
 module.exports = function(code) {
     var io = rooms.getIO();
 
-    if (!connections[code]) {
-        connections[code] = io.of('/' + code);
+    if (!namespaces[code]) {
+        namespaces[code] = io.of('/' + code);
 
-        connections[code].on('connection', (socket) => {
+        namespaces[code].on('connection', (socket) => {
             var persons = rooms.getRooms()[code].persons;
 
             if (persons.length === 2) {
@@ -30,7 +30,7 @@ module.exports = function(code) {
             });
 
             socket.on('clear-board', () => {
-                connections[code].emit('clear-board');
+                namespaces[code].emit('clear-board');
             });
 
             socket.on('disconnect', () => {
@@ -40,5 +40,5 @@ module.exports = function(code) {
         });
     }
 
-    return connections[code];
+    return namespaces[code];
 };
