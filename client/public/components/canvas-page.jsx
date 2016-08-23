@@ -8,12 +8,20 @@ import store from '../js/store';
 export default React.createClass({
   getInitialState() {
     return {
-      partner: true
+      partner: false
     }
   },
 
+  componentWillMount() {
+    this.setState({
+      partner: store.partner
+    });
+  },
+
   componentDidMount() {
-    store.on('has-partner', this.onPartnerAdded);
+    if (!this.state.partner) {
+      store.on('partner-added', this.onPartnerAdded);
+    }
   },
 
   onPartnerAdded() {
@@ -23,11 +31,18 @@ export default React.createClass({
   },
 
   render() {
-    const content = this.state.partner ? <Canvas/> : <p>Waiting for partner...</p>;
+    const content = this.state.partner ? <Canvas color={store.color}/> : <p>Waiting for partner...</p>;
+    const button = this.state.partner ? <button className="btn btn-lg btn-primary">Clear the board</button> : '';
+    const className = this.state.partner ? 'col-xs-9' : 'col-xs-12';
+
     return (
       <div id="canvas-wrapper">
-        <h4>Here is our canvas</h4>
-        {content}
+        <div className="row">
+          <div className="col-xs-3">
+            {button}
+          </div>
+          <div className={className}>{content}</div>
+        </div>
       </div>
     )
   }

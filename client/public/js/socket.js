@@ -6,14 +6,12 @@ import io from 'socket.io-client';
 import Dispatcher from './dispatcher';
 
 export default (roomCode) => {
-  var socket = io.connect('http://localhost:8000');
+  var socket = io.connect('http://localhost:8000/' + roomCode);
 
   socket.on('server-draw', data => {
-    console.log(data);
-
     Dispatcher.dispatch({
       eventName: 'server-draw',
-      data: { code: this.code }
+      data: data
     });
   });
 
@@ -22,4 +20,12 @@ export default (roomCode) => {
       eventName: 'partner-added'
     });
   });
+
+  socket.on('room-deleted', data => {
+    Dispatcher.dispatch({
+      eventName: 'room-deleted'
+    });
+  });
+
+  return socket;
 };

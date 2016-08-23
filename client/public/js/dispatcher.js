@@ -18,6 +18,14 @@ Dispatcher.register( function( event ) {
       store.partnerAdded(event.data);
       break;
 
+    case 'room-deleted':
+      store.refreshAll();
+      break;
+
+    case 'draw':
+      store.draw(event.data);
+      break;
+
     case 'server-draw':
       store.serverDraw(event.data);
       break;

@@ -1,20 +1,21 @@
 
 'use strict';
 import React from 'react';
+import Dispatcher from '../js/dispatcher';
 
 export default React.createClass({
   started: false,
 
   action(event) {
-    let x = event.pageX - this.canvas.offsetLeft;
-    let y = event.pageY - this.canvas.offsetTop;
+    const box = this.canvas.getBoundingClientRect();
 
-    //debugger;
+    let x = event.pageX - box.left;
+    let y = event.pageY - box.top;
+
     this[event.type](x, y);
   },
 
   mousedown(x, y) {
-    console.log(x + '  ' + y)
     this.context.beginPath();
     this.context.moveTo(x, y);
     this.started = true;
@@ -23,12 +24,24 @@ export default React.createClass({
   mousemove(x, y) {
     if (this.started) {
       this.context.lineTo(x, y);
+      this.context.strokeStyle = this.props.color;
       this.context.stroke();
+
+      Dispatcher.dispatch({
+        eventName: 'draw',
+        data: {
+          line: [x, y],
+          color: this.props.color
+        }
+      });
     }
   },
 
   mouseup(x, y) {
-    //this.mousemove(x, y);
+    this.started = false;
+  },
+
+  mouseleave() {
     this.started = false;
   },
 
@@ -38,7 +51,7 @@ export default React.createClass({
   },
 
   render() {
-    return <canvas ref="canvas" id="canvas" onMouseMove={this.action} onMouseUp={this.action} onMouseDown={this.action}
+    return <canvas ref="canvas" id="canvas" onMouseMove={this.action} onMouseUp={this.action} onMouseDown={this.action} onMouseLeave={this.action}
                    width="500" height="500"></canvas>
   }
 })

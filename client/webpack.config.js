@@ -1,12 +1,15 @@
 
 'use strict';
 
+var path = require('path');
+
 module.exports = {
   resolve: {
+    root: [__dirname + path.sep + 'public'],
     extensions: ['', '.js', '.jsx']
   },
 
-  context: __dirname + "/public",
+  context: __dirname + path.sep + "public",
   entry: './index',
   output: {
     filename: 'build.js'

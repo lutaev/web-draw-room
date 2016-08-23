@@ -1,3 +1,7 @@
+a{
+    cursor: pointer;
+}
+
 #layout{
     max-width: 1200px;
     margin: 0 auto;
@@ -11,10 +15,11 @@
 }
 
 #canvas-wrapper{
-    width: 500px;
     margin: 20px auto;
 }
 #canvas-wrapper canvas{
     outline: 1px solid #888888;
     cursor: default;
+    display: block;
+    margin: 0 auto;
 }
