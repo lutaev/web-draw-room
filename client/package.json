@@ -1,5 +1,5 @@
 {
-  "name": "sockets-canvas-client",
+  "name": "web-draw-room-client",
   "version": "1.0.0",
   "description": "Web Draw client",
   "main": "index.js",
