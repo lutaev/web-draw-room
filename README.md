@@ -2,7 +2,7 @@
 
 ###You have to do:</h4>
 
-Install NodeJS and nginx. You also can use other server for frontend, server should listen 80 port of localhost and return index.html file.
+Install NodeJS and nginx. You also can use other server for frontend, server should listen 80 port of localhost and return index.html file. Your frontend server also must proxy requests like http://localhost/api/ to http:localhost:8000/api/.
 
 
 In terminal run

@@ -1,9 +1,5 @@
-.idea/
-
-server/.idea/
 server/node_modules/
 
-client/.idea/
 client/node_modules/
 client/build.js
 
