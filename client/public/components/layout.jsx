@@ -2,58 +2,38 @@
 'use strict';
 
 import React from 'react';
-import Form from './form-page';
-import Canvas from './canvas-page';
+import {connect} from 'react-redux';
+import FormPage from './form-page';
+import CanvasPage from './canvas-page';
+import ExitPage from './exit-page';
 import store from '../js/store';
+import {COLORS} from '../js/core'
 
-export default React.createClass ({
-    getInitialState() {
-        return {
-            code: null,
-            refreshed: false
-        }
-    },
-
-    componentDidMount() {
-        store.on('code-added', this.onCodeAdded);
-        store.on('store-refresh', this.refresh);
-    },
-
-    onCodeAdded() {
-        this.setState({
-            code: store.code
-        });
-    },
-
-    reload: function() {
-        store.partner = false;
-
-        this.setState({
-            code: null,
-            refreshed: false
-        });
-    },
-
-    refresh() {
-        this.setState({
-            refreshed: true
-        });
-    },
+export const Layout =  React.createClass ({
 
     logout: function() {
-        window.location.reload();
+        store.dispatch({
+            type: 'LOGOUT'
+        });
     },
 
+
     render() {
-        if (this.state.refreshed) {
-            var page = <p className="refreshed text-center">It seems that your partner leave draw board. Please, <a onClick={this.reload}>try again</a></p>
-        } else if (!this.state.code) {
-            page = <Form/>
+        if (this.props.code) {
+            if (this.props.partner) {
+                var page = <CanvasPage partner={this.props.partner} waiting={this.props.waiting} color={this.props.color}/>
+            } else {
+                if (this.props.waiting) {
+                    page = <CanvasPage partner={this.props.partner} waiting={this.props.waiting} color={this.props.color}/>
+                } else {
+                    page = <ExitPage logout={this.logout}/>
+                }
+            }
         } else {
-            page = <Canvas/>
+            page = <FormPage code={this.props.code} color={this.props.color} colors={COLORS}/>
         }
 
-        var logout = this.state.code ? <p className="pull-right text-right"><a onClick={this.logout}>Logout</a></p> : '';
+        var logout = this.props.code ? <p className="pull-right text-right"><a onClick={this.logout}>Logout</a></p> : '';
 
         return (
             <div>
@@ -65,3 +45,17 @@ export default React.createClass ({
         )
     }
 });
+
+export const LayoutConnected = connect(mapStateToProps)(Layout);
+
+function mapStateToProps(state) {
+    return {
+        id: state.get('id'),
+        code: state.get('code'),
+        color: state.get('color'),
+        partner: state.get('partner'),
+        waiting: state.get('waiting')
+    }
+}
+
+

@@ -3,7 +3,8 @@
 'use strict';
 
 import io from 'socket.io-client';
-import Dispatcher from './dispatcher';
+import store from './store';
+import {serverDrawStart, serverDraw, serverDrawStop, serverClearBoard} from './core';
 
 let sockets = {};
 
@@ -12,42 +13,32 @@ export default {
     if (!sockets[code]) {
       sockets[code] = io.connect('http://localhost:8000/' + code);
 
-      sockets[code].on('draw-start', data => {
-        Dispatcher.dispatch({
-          eventName: 'server-draw-start',
-          data: data
+      sockets[code].on('PARTNER_ADDED', () => {
+        store.dispatch({
+          type: 'PARTNER_ADDED'
         });
       });
 
-      sockets[code].on('draw', data => {
-        Dispatcher.dispatch({
-          eventName: 'server-draw',
-          data: data
+      sockets[code].on('PARTNER_LOST', () => {
+        store.dispatch({
+          type: 'PARTNER_LOST'
         });
       });
 
-      sockets[code].on('draw-start', data => {
-        Dispatcher.dispatch({
-          eventName: 'server-draw-stop'
-        });
+      sockets[code].on('DRAW_START', data => {
+        serverDrawStart(data);
       });
 
-      sockets[code].on('partner-added', data => {
-        Dispatcher.dispatch({
-          eventName: 'partner-added'
-        });
+      sockets[code].on('DRAW', data => {
+        serverDraw(data);
       });
 
-      sockets[code].on('room-deleted', data => {
-        Dispatcher.dispatch({
-          eventName: 'room-deleted'
-        });
+      sockets[code].on('DRAW_STOP', () => {
+        serverDrawStop();
       });
 
-      sockets[code].on('clear-board', data => {
-        Dispatcher.dispatch({
-          eventName: 'server-clear-board'
-        });
+      sockets[code].on('CLEAR_BOARD', () => {
+        serverClearBoard();
       });
     }
 

@@ -44,7 +44,7 @@ module.exports = {
       code: data.code,
       color: data.color,
       id: id,
-      hasPartner: personsLength === 1
+      partner: personsLength === 1
     }
   },
 
@@ -56,34 +56,3 @@ module.exports = {
     return rooms;
   }
 };
-
-//function setConnection(code) {
-//  var connection = io.of('/' + code);
-//
-//  connection.on('connection', (socket) => {
-//    socket.broadcast.emit('partner-added');
-//
-//    socket.on('draw-start', data => {
-//      socket.broadcast.emit('server-draw-start', data);
-//    });
-//
-//    socket.on('draw', data => {
-//      socket.broadcast.emit('server-draw', data);
-//    });
-//
-//    socket.on('draw-stop', () => {
-//      socket.broadcast.emit('server-draw-stop');
-//    });
-//
-//    socket.on('disconnect', () => {
-//      socket.broadcast.emit('room-deleted');
-//      deleteRoom(code);
-//    })
-//  });
-//
-//  return connection;
-//}
-
-//function deleteRoom(code) {
-//  delete rooms[code];
-//}

@@ -2,19 +2,15 @@
 'use strict';
 
 import React from 'react';
-import Dispatcher from '../js/dispatcher';
+import store from '../js/store';
+import {addCode} from '../js/xhr';
 
 export default React.createClass({
 
-    colors: [
-        '#000', '#adadad', '#ff0000', '#5800ff', '#00ffde', '#25ff00',
-        '#edff00', '#ff00f5', '#009fff', '#00ff97', '#ffa700'
-    ],
-
     getInitialState() {
         return {
-            color: '#000',
-            code: ''
+            color: this.props.color,
+            code: this.props.code
         }
     },
 
@@ -30,13 +26,18 @@ export default React.createClass({
         event.preventDefault();
 
         if (this.state.code) {
-          Dispatcher.dispatch({
-              eventName: 'add-code',
-              data: {
-                  code: this.state.code,
-                  color: this.state.color
-              }
-          });
+            addCode({
+                code: this.state.code,
+                color: this.state.color
+            }).then(response => {
+                store.dispatch({
+                    type: 'CODE_ADDED',
+                    data: response
+                });
+            }).catch(error => {
+                console.log(error.stack);
+                debugger;
+            });
         }
     },
 
@@ -50,7 +51,7 @@ export default React.createClass({
                 <div className="form-group">
                     <label>Select color</label>
                     <select className="form-control" onChange={this.selectColor}  value={this.state.color} style={{color: this.state.color}}>
-                        {this.colors.map((color, key) => {
+                        {this.props.colors.map((color, key) => {
                             return <option key={key} value={color} style={{color: color}}>{color}</option>
                         })}
                     </select>

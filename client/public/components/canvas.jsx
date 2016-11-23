@@ -1,21 +1,24 @@
 
 'use strict';
 import React from 'react';
-import Dispatcher from '../js/dispatcher';
 import store from '../js/store';
+import * as canvasCore from '../js/canvas';
+import {drawStart, draw, drawStop} from '../js/core';
 
 export default React.createClass({
   started: false,
-  serverStarted: false,
 
   componentDidMount() {
     this.canvas = this.refs.canvas;
     this.context = this.canvas.getContext('2d');
 
-    store.on('draw-start', this.drawStart);
-    store.on('draw', this.draw);
-    store.on('draw-stop', this.drawStop);
-    store.on('clear-board', this.clearBoard);
+    store.dispatch({
+      type: 'INIT_CANVAS',
+      data: {
+        canvas: this.canvas,
+        context: this.context
+      }
+    })
   },
 
   action(event) {
@@ -28,73 +31,33 @@ export default React.createClass({
   },
 
   mousedown(x, y) {
-    this.context.beginPath();
-    this.context.moveTo(x, y);
+    canvasCore.start(x, y);
     this.started = true;
 
-    Dispatcher.dispatch({
-      eventName: 'draw-start',
-      data: {
-        point: [x, y]
-      }
+    drawStart({
+      point: [x, y]
     });
   },
 
   mousemove(x, y) {
     if (this.started) {
-      this.context.lineTo(x, y);
-      this.context.strokeStyle = this.props.color;
-      this.context.stroke();
+      canvasCore.draw(x, y, this.props.color);
 
-      Dispatcher.dispatch({
-        eventName: 'draw',
-        data: {
-          line: [x, y],
-          color: this.props.color
-        }
+      draw({
+        line: [x, y],
+        color: this.props.color
       });
     }
   },
 
   mouseup() {
-    Dispatcher.dispatch({
-      eventName: 'draw-stop'
-    });
+    drawStop();
     this.started = false;
   },
 
   mouseleave() {
-    Dispatcher.dispatch({
-      eventName: 'draw-stop'
-    });
+    drawStop();
     this.started = false;
-  },
-
-  drawStart(data) {
-    this.context.beginPath();
-    this.context.moveTo(data.point[0], data.point[1]);
-    this.serverStarted = true;
-  },
-
-  draw(data) {
-    this.context.lineTo(data.line[0], data.line[1]);
-    this.context.strokeStyle = data.color;
-    this.context.stroke();
-  },
-
-  drawStop() {
-    this.serverStarted = false;
-  },
-
-  clearBoard() {
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-  },
-
-  componentWillUnmount() {
-    store.off('draw-start');
-    store.off('draw');
-    store.off('draw-stop');
-    store.off('clear-board');
   },
 
   render() {
