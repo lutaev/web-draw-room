@@ -56,3 +56,18 @@ module.exports = {
     return rooms;
   }
 };
+
+//console.log( c );
+function a(){
+  console.log( c );
+
+  var c = 1;
+  (function(c){
+    c = 2;
+    console.log( c );
+  })( c );
+
+  console.log( c );
+}
+
+a();

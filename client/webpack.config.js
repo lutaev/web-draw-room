@@ -15,11 +15,6 @@ module.exports = {
     filename: 'build.js'
   },
 
-  watch: true,
-  watchOptions: {
-    aggregateTimeout: 100
-  },
-
   module: {
     loaders: [{
       test: /\.js$/,

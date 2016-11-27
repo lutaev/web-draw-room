@@ -39,6 +39,7 @@ export function partnerLost(state) {
 }
 
 export function logout(state) {
+  socket.emit('logout');
   return state.merge({
     partner: false,
     color: COLORS[0],
@@ -72,10 +73,11 @@ export function clearBoard(){
 // From server
 
 export function serverDrawStart(data){
-  canvasCore.start(data.line[0], data.line[1]);
+  canvasCore.start(data.point[0], data.point[1]);
 }
 
 export function serverDraw(data){
+  console.log(data.color);
   canvasCore.draw(data.line[0], data.line[1], data.color);
 }
 

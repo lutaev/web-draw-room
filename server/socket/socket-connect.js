@@ -33,10 +33,15 @@ module.exports = function(code) {
                 namespaces[code].emit('CLEAR_BOARD');
             });
 
+            socket.on('logout', () => {
+                socket.broadcast.emit('PARTNER_LOST');
+                delete rooms.getRooms()[code];
+            });
+
             socket.on('disconnect', () => {
                 socket.broadcast.emit('PARTNER_LOST');
                 delete rooms.getRooms()[code];
-            })
+            });
         });
     }
 
