@@ -10,7 +10,7 @@ module.exports = router => {
       throw new Error('No code!');
     }
 
-    var person = rooms.addPerson(req.body);
+    let person = rooms.addPerson(req.body);
 
     if (person) {
       var data = {

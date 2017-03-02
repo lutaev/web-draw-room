@@ -20,7 +20,7 @@ module.exports = {
     // I there is no room for this code - let's add room, array for persons and ws connection
     if (!rooms[data.code]) {
 
-      var connection = socketConnect( data.code);
+      let connection = socketConnect( data.code);
 
       rooms[data.code] = {
         persons: [],
