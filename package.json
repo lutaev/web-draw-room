@@ -1,0 +1,49 @@
+{
+  "name": "web-draw-room",
+  "version": "2.0.0",
+  "description": "Web draw room",
+  "main": "server/app.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lutaev/web-draw-room.git"
+  },
+  "keywords": [
+    "web",
+    "draw",
+    "room"
+  ],
+  "author": "Lutaev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lutaev/web-draw-room/issues"
+  },
+  "homepage": "https://github.com/lutaev/web-draw-room#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "bootstrap": "^3.3.7",
+    "cookie-parser": "^1.4.3",
+    "errorhandler": "^1.5.0",
+    "flux": "^3.1.3",
+    "immutable": "^3.8.2",
+    "jquery": "^3.2.1",
+    "minivents": "^2.2.0",
+    "multer": "^1.3.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2",
+    "socket.io": "^2.0.3",
+    "socket.io-client": "^2.0.3",
+    "webpack": "^3.7.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "react-hot-loader": "^3.1.1"
+  }
+}
