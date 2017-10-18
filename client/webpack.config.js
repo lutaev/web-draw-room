@@ -5,8 +5,8 @@ var path = require('path');
 
 module.exports = {
   resolve: {
-    root: [__dirname + path.sep + 'public'],
-    extensions: ['', '.js', '.jsx']
+    modules: [__dirname + path.sep + 'public'],
+    extensions: ['.js', '.jsx', '']
   },
 
   context: __dirname + path.sep + "public",
